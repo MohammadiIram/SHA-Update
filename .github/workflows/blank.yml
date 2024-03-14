@@ -23,4 +23,4 @@ jobs:
         ./sha_update.sh
         # This will show both stdout and stderr
         echo "Result of script:"
-        ./script.sh
+        ./sha_update.sh

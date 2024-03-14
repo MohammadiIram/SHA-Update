@@ -2,9 +2,8 @@ name: Run Script on Push
 
 # This workflow is triggered on pushes to the repository.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+        
 
 # Job definition
 jobs:
@@ -17,10 +16,13 @@ jobs:
     - uses: actions/checkout@v3
       # Updated to use the latest version for Node.js 20 support
 
-    - name: Execute script.sh
+    - name: Execute sha_update.sh
       run: |
         chmod +x ./sha_update.sh
         ./sha_update.sh
         # This will show both stdout and stderr
         echo "Result of script:"
         ./sha_update.sh
+
+    - name: Print contents of script.sh
+      run: cat ./sha_update.sh

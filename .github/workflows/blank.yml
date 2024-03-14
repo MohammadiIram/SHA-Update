@@ -19,5 +19,5 @@ jobs:
 
     - name: Execute script.sh
       run: |
-        chmod +x ./script.sh
-        ./script.sh
+        chmod +x ./sha_update.sh
+        ./sha_update.sh

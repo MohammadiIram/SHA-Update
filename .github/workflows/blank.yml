@@ -1,4 +1,4 @@
-name: Run Script on Push
+name: SHA verifier for quay and repo
 
 # This workflow is triggered on pushes to the repository.
 on:

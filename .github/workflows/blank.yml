@@ -3,6 +3,9 @@ name: Run Script on Push
 # This workflow is triggered on pushes to the repository.
 on:
   workflow_dispatch:
+    inputs:
+      name:
+        required: true
         
 
 # Job definition
@@ -23,6 +26,3 @@ jobs:
         # This will show both stdout and stderr
         echo "Result of script:"
         ./sha_update.sh
-
-    - name: Print contents of script.sh
-      run: cat ./sha_update.sh

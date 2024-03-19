@@ -1,10 +1,9 @@
 name: SHA verifier for quay and repo
 
-# This workflow is triggered on pushes to the repository.
 on:
   workflow_dispatch:
     inputs:
-      name:
+      rhoai Version:
         required: true
         
 

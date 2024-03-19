@@ -4,16 +4,14 @@ on:
   workflow_dispatch:
     
 
-# Job definition
+# Job 
 jobs:
   run-script:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # Steps
     steps:
     - uses: actions/checkout@v3
-      # Updated to use the latest version for Node.js 20 support
 
     - name: Execute sha_update.sh
       run: |

@@ -2,6 +2,11 @@ name: SHA verifier for quay and repo
 
 on:
   workflow_dispatch:
+   inputs:
+      branch_name:
+        description: 'Branch Name to Run the Script On'
+        required: true
+        default: 'main'
     
 
 # Job 

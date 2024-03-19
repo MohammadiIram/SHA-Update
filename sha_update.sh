@@ -39,6 +39,7 @@ extract_names_with_sbom_extension() {
         # Print in red if not equal
         echo "$tag"
         echo -e "\e[31m$hash\e[0m does not match \e[31m$names_part\e[0m"
+        exit 1
     fi
 
 }

@@ -2,10 +2,7 @@ name: SHA verifier for quay and repo
 
 on:
   workflow_dispatch:
-    inputs:
-      rhoai Version:
-        required: true
-        
+    
 
 # Job definition
 jobs:

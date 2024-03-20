@@ -9,8 +9,6 @@ fi
 REPO_URL=$(head -n 1 "$REPO_URL_FILE")
 
 
-FILE_PATH="kserve/config/overlays/odh/params.env"
-
 function clone_repo() {
   local BRANCH_NAME=$1
   git clone --depth 1 -b "$BRANCH_NAME" "$REPO_URL" "kserve"
@@ -20,11 +18,13 @@ function clone_repo() {
   fi
 }
 
-function get_latest_rhods_version() {
-  local rhods_version
-  rhods_version=$(git ls-remote --heads $REPO_URL | grep 'rhoai' | awk -F'/' '{print $NF}' | sort -V | tail -1)
-  echo "$rhods_version"
-}
+FILE_PATH="kserve/config/overlays/odh/params.env"
+
+# function get_latest_rhods_version() {
+#   local rhods_version
+#   rhods_version=$(git ls-remote --heads $REPO_URL | grep 'rhoai' | awk -F'/' '{print $NF}' | sort -V | tail -1)
+#   echo "$rhods_version"
+# }
 
 extract_names_with_sbom_extension() {
  local tag="$1"

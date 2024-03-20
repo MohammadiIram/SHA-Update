@@ -8,16 +8,6 @@ if [ ! -f "$REPO_URL_FILE" ]; then
 fi
 REPO_URL=$(head -n 1 "$REPO_URL_FILE")
 
-# Branch name can be specified as an argument. If not, read from 'branch_name.txt'
-BRANCH_NAME="$1"
-if [ -z "$BRANCH_NAME" ]; then
-  BRANCH_NAME_FILE="branch_name.txt"
-  if [ ! -f "$BRANCH_NAME_FILE" ]; then
-    echo "Error: Branch name file not found and no branch name argument provided."
-    exit 1
-  fi
-  BRANCH_NAME=$(head -n 1 "$BRANCH_NAME_FILE")
-fi
 
 FILE_PATH="kserve/config/overlays/odh/params.env"
 

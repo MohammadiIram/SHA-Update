@@ -17,4 +17,4 @@ jobs:
       - name: Run Custom Script
         run: |
           chmod +x ./branch.sh
-          ./branch.sh ${{ github.event.inputs.branch_name }}
+          ./branch.sh "${{ github.event.inputs.branch_name }}"

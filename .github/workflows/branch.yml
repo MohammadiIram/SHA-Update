@@ -1,11 +1,8 @@
-name: Clone Specific Repo and Branch
+name: Clone Specific Branch
 
 on:
   workflow_dispatch:
     inputs:
-      repository_url:
-        description: 'Repository URL'
-        required: true
       branch_name:
         description: 'Branch Name'
         required: true
@@ -20,4 +17,4 @@ jobs:
       - name: Run Custom Script
         run: |
           chmod +x ./branch.sh
-          ./branch.sh ${{ github.event.inputs.repository_url }} ${{ github.event.inputs.branch_name }}
+          ./branch.sh ${{ github.event.inputs.branch_name }}

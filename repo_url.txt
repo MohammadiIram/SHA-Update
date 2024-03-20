@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+REPO_URL="https://github.com/red-hat-data-services/kserve.git"

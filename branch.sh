@@ -49,3 +49,67 @@ if [ -f "$FILE_PATH" ]; then
 else
   echo "File not found: $FILE_PATH"
 fi
+extract_names_with_sbom_extension() {
+ local tag="$1"
+ local hash="$2"
+
+    json_response=$(curl -s https://quay.io/api/v1/repository/modh/$tag/tag/ | jq -r '.tags | .[:3] | map(select(.name | endswith(".sbom"))) | .[].name')
+
+   # echo "$json_response"
+
+    local names_part=$(echo "$json_response" | sed 's/^sha256-\(.*\)\.sbom$/\1/')
+    echo "$names_part"
+
+
+    if [ "$hash" = "$names_part" ]; then
+        # Print in green if equal
+        echo "$tag"
+        echo -e "\e[32m$hash\e[0m matches \e[32m$names_part\e[0m"
+    else
+        # Print in red if not equal
+        echo "$tag"
+        echo -e "\e[31m$hash\e[0m does not match \e[31m$names_part\e[0m"
+    fi
+
+}
+
+main(){
+
+if [ -f "$FILE_PATH" ]; then
+    echo "File found: $FILE_PATH"
+    local input=$(<"$FILE_PATH")
+
+    # Extract names before '=' using cut
+    local names=$(echo "$input" | cut -d'=' -f1)
+
+    #echo "$names"
+
+     # for name in $names; do
+     #   echo "$name"
+        # Perform your operation here
+    #    extract_names_with_sbom_extension $name
+     # done
+
+
+ # Loop through each line of input
+    while IFS= read -r line; do
+        # Extract the name before '='
+        local name=$(echo "$line" | cut -d'=' -f1)
+
+        # Extract the text after 'sha256:'
+        local hash=$(echo "$line" | awk -F 'sha256:' '{print $2}')
+
+        extract_names_with_sbom_extension $name $hash
+
+       # echo "Name: $name"
+       # echo "Hash: $hash"
+    done <<< "$input"
+    rm -rf kserve
+    else
+    echo "File not found: $FILE_PATH"
+    fi
+
+
+}
+
+main

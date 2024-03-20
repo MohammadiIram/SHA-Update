@@ -1,33 +1,23 @@
-name: Branch check
+name: Clone Specific Repo and Branch
 
 on:
   workflow_dispatch:
     inputs:
-      repo_url:
-        description: 'Repository URL (leave blank to use repo_url.txt)'
-        required: false
+      repository_url:
+        description: 'Repository URL'
+        required: true
       branch_name:
-        description: 'Branch Name to Run the Script On (leave blank to use branch_name.txt)'
-        required: false
+        description: 'Branch Name'
+        required: true
 
 jobs:
-  run-script:
+  clone-and-run:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    # If the repo_url is provided, overwrite repo_url.txt
-    - name: Set Repository URL
-      if: ${{ github.event.inputs.repo_url }}
-      run: echo "${{ github.event.inputs.repo_url }}" > repo_url.txt
-
-    # If the branch_name is provided, overwrite branch_name.txt
-    - name: Set Branch Name
-      if: ${{ github.event.inputs.branch_name }}
-      run: echo "${{ github.event.inputs.branch_name }}" > branch_name.txt
-
-    - name: Execute sha_update.sh
-      run: |
-        chmod +x ./sha_update.sh
-        ./sha_update.sh
+      - name: Run Custom Script
+        run: |
+          chmod +x ./path/to/your/branch.sh
+          ./path/to/your/script.sh ${{ github.event.inputs.repository_url }} ${{ github.event.inputs.branch_name }}

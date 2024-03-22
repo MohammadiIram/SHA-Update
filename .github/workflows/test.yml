@@ -1,4 +1,4 @@
-name: Verify and Process Branch
+name: test
 
 on:
   workflow_dispatch:

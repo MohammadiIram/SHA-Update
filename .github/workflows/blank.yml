@@ -2,7 +2,7 @@ name: SHA verifier for quay and repo
 
 on:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '30 4 * * *'
   workflow_dispatch:
    inputs:
       branch_name:

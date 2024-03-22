@@ -22,5 +22,5 @@ jobs:
 
     - name: Execute sha_update.sh
       run: |
-        chmod +x ./test.sh
-        ./test.sh
+        chmod +x ./sha_update.sh
+        ./sha_update.sh

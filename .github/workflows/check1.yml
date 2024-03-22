@@ -1,4 +1,4 @@
-name: SHA verifier for quay and repo
+name: check1
 
 on:
   workflow_dispatch:

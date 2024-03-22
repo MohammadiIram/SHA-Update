@@ -20,6 +20,18 @@ jobs:
         with:
           token: ${{ secrets.NEW }}
           ref: ${{ github.event.inputs.branch_name || github.event.repository.default_branch }}
+      - name: Set up Git Debug Logging
+        run: |
+          git config --global --add protocol.version 2
+          git config --global core.logAllRefUpdates true
+          export GIT_TRACE=1
+          export GIT_CURL_VERBOSE=1
+
+      - name: Attempt Fetch (Debug)
+        run: git fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/rhoai-2.9*:refs/remotes/origin/rhoai-2.9* +refs/tags/rhoai-2.9*:refs/tags/rhoai-2.9*
+        env:
+          GIT_TRACE: 1
+          GIT_CURL_VERBOSE: 1
 
       - name: Run Script
         run: |

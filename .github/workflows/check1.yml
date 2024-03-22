@@ -22,6 +22,9 @@ jobs:
         run: |
           git config --global --add protocol.version 2
           git config --global core.logAllRefUpdates true
+          git ls-remote --heads origin
+          git ls-remote --tags origin
+
       - name: Fetch Based on Pattern (Non-blocking)
         run: |
           PATTERN="${{ github.event.inputs.pattern }}"

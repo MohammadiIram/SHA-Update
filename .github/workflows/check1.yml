@@ -37,6 +37,6 @@ jobs:
 
       - name: Run Script
         run: |
-          chmod +x ./branch.sh
+          chmod +x ./branch1.sh
           # Pass the branch name to the script. If it's a schedule event, this will be empty and can be handled by the script accordingly.
-          ./branch.sh "${{ github.event.inputs.branch_name || github.ref_name }}"
+          ./branch1.sh "${{ github.event.inputs.branch_name || github.ref_name }}"

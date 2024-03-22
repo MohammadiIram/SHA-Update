@@ -1,0 +1,22 @@
+name: SHA Verifier Workflow
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  verify-sha:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Necessary for operations that require full git history
+
+    - name: Setup Environment
+      run: sudo apt-get update && sudo apt-get install -y jq
+
+    - name: Execute SHA Verifier Script
+      run: |
+        chmod +x ./sha_update.sh
+        ./sha_update.sh

@@ -22,7 +22,13 @@ jobs:
         run: |
           git config --global --add protocol.version 2
           git config --global core.logAllRefUpdates true
-      
+      - name: Fetch Based on Pattern (Non-blocking)
+        run: |
+          PATTERN="${{ github.event.inputs.pattern }}"
+          echo "Attempting to fetch branches and tags matching the pattern '$PATTERN'..."
+          # Attempt to fetch, but don't fail the workflow if the fetch fails
+          git fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/$PATTERN:refs/remotes/origin/$PATTERN +refs/tags/$PATTERN:refs/tags/$PATTERN || echo "Warning: Failed to fetch branches or tags matching the pattern '$PATTERN'."
+
       - name: Fetch Based on Pattern
         run: |
           PATTERN="${{ github.event.inputs.pattern }}"

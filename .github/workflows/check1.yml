@@ -1,47 +1,21 @@
-name: Dynamic Fetch Branches and Tags
+name: SHA verifier for quay and repo
 
 on:
   workflow_dispatch:
     inputs:
-      pattern:
-        description: 'Branch/Tag pattern to fetch (e.g., feature-*, release-2.1*)'
+      branch_name:
+        description: 'Branch Name'
         required: true
         default: 'main'
 
 jobs:
-  fetch-branches-and-tags:
+  run-script:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Fetch all history for all branches and tags.
-      
-      - name: Configure Git
-        run: |
-          git config --global --add protocol.version 2
-          git config --global core.logAllRefUpdates true
-          git ls-remote --heads origin
-          git ls-remote --tags origin
+      - uses: actions/checkout@v3
 
-      - name: Fetch Based on Pattern (Non-blocking)
+      - name: Execute sha_update.sh
         run: |
-          PATTERN="${{ github.event.inputs.pattern }}"
-          echo "Attempting to fetch branches and tags matching the pattern '$PATTERN'..."
-          # Attempt to fetch, but don't fail the workflow if the fetch fails
-          git fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/$PATTERN:refs/remotes/origin/$PATTERN +refs/tags/$PATTERN:refs/tags/$PATTERN || echo "Warning: Failed to fetch branches or tags matching the pattern '$PATTERN'."
-
-      - name: Fetch Based on Pattern
-        run: |
-          PATTERN="${{ github.event.inputs.pattern }}"
-          echo "Fetching branches and tags matching the pattern '$PATTERN'..."
-          
-          if git fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/$PATTERN:refs/remotes/origin/$PATTERN +refs/tags/$PATTERN:refs/tags/$PATTERN; then
-            echo "Successfully fetched branches and tags matching the pattern '$PATTERN'."
-          else
-            echo "Failed to fetch branches or tags matching the pattern '$PATTERN'. Please check the pattern and ensure matching branches/tags exist."
-          fi
-        env:
-          GIT_TRACE: 1
-          GIT_CURL_VERBOSE: 1
+          chmod +x ./branch1.sh
+          ./branch1.sh

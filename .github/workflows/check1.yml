@@ -1,42 +1,38 @@
-name: Process Branch with Optional Selection
+name: Dynamic Fetch Branches and Tags
 
 on:
-  schedule:
-    # Runs at 00:00 UTC every day on the default branch
-    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
-      branch_name:
-        description: 'Branch Name (leave empty to use the default branch)'
-        required: false
-        default: ''
+      pattern:
+        description: 'Branch/Tag pattern to fetch (e.g., feature-*, release-2.1*)'
+        required: true
+        default: 'main'
 
 jobs:
-  process-branch:
+  fetch-branches-and-tags:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          # Use the input branch name if provided, otherwise fallback to the default branch.
-          # This effectively makes the branch name optional for manual triggers.
-          ref: ${{ github.event.inputs.branch_name || github.ref_name }}
-
-      - name: Set up Git Debug Logging
+          fetch-depth: 0  # Fetch all history for all branches and tags.
+      
+      - name: Configure Git
         run: |
           git config --global --add protocol.version 2
           git config --global core.logAllRefUpdates true
-          export GIT_TRACE=1
-          export GIT_CURL_VERBOSE=1
-
-      - name: Attempt Fetch (Debug)
-        run: git fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+      
+      - name: Fetch Based on Pattern
+        run: |
+          PATTERN="${{ github.event.inputs.pattern }}"
+          echo "Fetching branches and tags matching the pattern '$PATTERN'..."
+          
+          if git fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +refs/heads/$PATTERN:refs/remotes/origin/$PATTERN +refs/tags/$PATTERN:refs/tags/$PATTERN; then
+            echo "Successfully fetched branches and tags matching the pattern '$PATTERN'."
+          else
+            echo "Failed to fetch branches or tags matching the pattern '$PATTERN'. Please check the pattern and ensure matching branches/tags exist."
+          fi
         env:
           GIT_TRACE: 1
           GIT_CURL_VERBOSE: 1
-
-      - name: Run Script
-        run: |
-          chmod +x ./branch1.sh
-          # Pass the branch name to the script. If it's a schedule event, this will be empty and can be handled by the script accordingly.
-          ./branch1.sh "${{ github.event.inputs.branch_name || github.ref_name }}"
